@@ -1,3 +1,16 @@
+/*this for the search bar at the top of the page*/
+#search-bar{
+  display: flex;
+  justify-content: center;
+}
+
+#search-bar button{
+  margin-left: 10px;
+}
+
+
+
+
 * {
   box-sizing: border-box;
   margin: 0;
