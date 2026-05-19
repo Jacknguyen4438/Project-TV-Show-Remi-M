@@ -7,24 +7,22 @@
   <title>TV Show Project | Remi M.(remimarcelle)</title>
   <link href="style.css" rel="stylesheet" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+  <!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
+  <script src="episodes.js" defer></script>
+    <!-- Loads YOUR javascript code -->
+   <script src="script.js" defer></script>
 </head>
 
 <body>
   <div id="search-bar">
     <label for="site-search"></label>
-    <input type="search" id="site-search" name="q">
+    <input type="search" id="site-search" name="q" placeholder="Find you show and episodes">
     <button>Search</button>
   </div>
   <br>
-  <hr>
   <div id="root">
   </div>
 
-  <!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
-  <script src="episodes.js"></script>
-
-  <!-- Loads YOUR javascript code -->
-  <script src="script.js"></script>
 </body>
 
 </html>
