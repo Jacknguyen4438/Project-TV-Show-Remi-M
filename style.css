@@ -1,3 +1,21 @@
+/*this for the search bar at the top of the page*/
+#search-bar{
+  display: flex;
+  justify-content: center;
+}
+
+#search-bar button{
+  margin-left: 10px;
+  padding : 2px;
+}
+#search-bar input{
+padding-right:20%;
+text-align: left;
+}
+
+
+
+
 * {
   box-sizing: border-box;
   margin: 0;
