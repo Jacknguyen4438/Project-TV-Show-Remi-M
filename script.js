@@ -1,4 +1,7 @@
 //You can edit ALL of the code here
+const API_URL = "https://api.tvmaze.com/shows/82/episodes"; // api url constant at top of 
+// file
+
 /**
  * Entry point for the app.
  * Fetches all episodes and renders them to the page.
@@ -6,8 +9,24 @@
  * @return {void}
  */
 function setup() {
-  const allEpisodes = getAllEpisodes();
-  makePageForEpisodes(allEpisodes);
+  const rootElem = document.getElementById("root"); // get root element
+  rootElem.textContent = "Loading episodes, please wait..."; // show loading message
+
+  fetch(API_URL) // fetch from API instead of getAllEpisodes
+    .then((response) => {
+      if (!response.ok) { // error handling
+        throw new Error(`HTTP was not ok: ${response.status}`);
+      }
+      return response.json(); // parse JSON
+    })
+    .then((episodes) => {
+      makePageForEpisodes(episodes); // render once data is ready
+    })
+    .catch((error) => { // show error message if fetch fails
+      rootElem.textContent = `Error loading episodes: 
+  ${error.message}`;
+    });
+
 }
 
 /**
