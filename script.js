@@ -1,7 +1,66 @@
 //You can edit ALL of the code here
 function setup() {
   const allEpisodes = getAllEpisodes();
+
   makePageForEpisodes(allEpisodes);
+  setupSearch(allEpisodes);
+  setupSelector(allEpisodes);
+  updateEpisodeCount(allEpisodes.length, allEpisodes.length);
+}
+
+function updateEpisodeCount(shown, total) {
+  const countDisplay = document.getElementById("episode-count");
+  countDisplay.textContent = `Displaying ${shown}/${total} episodes`;
+}
+
+
+function setupSearch(allEpisodes) {
+  const searchInput = document.getElementById("search");
+
+  searchInput.addEventListener("input", () => {
+    const term = searchInput.value.toLowerCase();
+
+    const filtered = allEpisodes.filter(ep =>
+      ep.name.toLowerCase().includes(term) ||
+      ep.summary.toLowerCase().includes(term)
+    );
+
+    makePageForEpisodes(filtered);
+    updateEpisodeCount(filtered.length, allEpisodes.length);
+  });
+}
+
+function setupSelector(allEpisodes) {
+  const selector = document.getElementById("episode-selector");
+
+  const defaultOption = document.createElement("option");
+  defaultOption.value = "all";
+  defaultOption.textContent = "Show all episodes";
+  selector.appendChild(defaultOption);
+
+  // Fill dropdown
+  allEpisodes.forEach(ep => {
+    const option = document.createElement("option");
+    const code = formatEpisodeCode(ep.season, ep.number);
+    option.value = ep.id;
+    option.textContent = `${code} - ${ep.name}`;
+    selector.appendChild(option);
+  });
+
+  // When user selects an episode
+ selector.addEventListener("change", () => {
+    if (selector.value === "all") {
+      makePageForEpisodes(allEpisodes);
+      updateEpisodeCount(allEpisodes.length, allEpisodes.length);
+      return;
+    }
+
+    const selectedId = Number(selector.value);
+    const selectedEpisode = allEpisodes.find(ep => ep.id === selectedId);
+
+    makePageForEpisodes([selectedEpisode]);
+    updateEpisodeCount(1, allEpisodes.length);
+  });
 }
 
 function formatEpisodeCode(season, episode) {
