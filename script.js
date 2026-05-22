@@ -1,15 +1,10 @@
-//You can edit ALL of the code here
-const API_URL = "https://api.tvmaze.com/shows/82/episodes"; // api url constant at top of 
-// file
+// You can edit ALL of the code here
+const API_URL = "https://api.tvmaze.com/shows/82/episodes"; // (not used yet, fine to keep)
 
 /**
  * Entry point for the app.
- * Fetches all episodes and renders them to the page.
- *
- * @return {void}
+ * Uses provided getAllEpisodes() and renders them.
  */
-//You can edit ALL of the code here
-//You can edit ALL of the code here
 function setup() {
   const allEpisodes = getAllEpisodes();
 
@@ -30,10 +25,11 @@ function setupSearch(allEpisodes) {
   searchInput.addEventListener("input", () => {
     const term = searchInput.value.toLowerCase();
 
-    const filtered = allEpisodes.filter(ep =>
-      ep.name.toLowerCase().includes(term) ||
-      ep.summary.toLowerCase().includes(term)
-    );
+    const filtered = allEpisodes.filter((ep) => {
+      const name = ep.name ? ep.name.toLowerCase() : "";
+      const summary = ep.summary ? ep.summary.toLowerCase() : "";
+      return name.includes(term) || summary.includes(term);
+    });
 
     makePageForEpisodes(filtered);
     updateEpisodeCount(filtered.length, allEpisodes.length);
@@ -43,14 +39,14 @@ function setupSearch(allEpisodes) {
 function setupSelector(allEpisodes) {
   const selector = document.getElementById("episode-selector");
 
-  // Add "Show all episodes"
+  // "Show all episodes" option
   const defaultOption = document.createElement("option");
   defaultOption.value = "all";
   defaultOption.textContent = "Show all episodes";
   selector.appendChild(defaultOption);
 
-  // Fill dropdown
-  allEpisodes.forEach(ep => {
+  // Fill dropdown with episodes
+  allEpisodes.forEach((ep) => {
     const option = document.createElement("option");
     const code = formatEpisodeCode(ep.season, ep.number);
     option.value = ep.id;
@@ -66,10 +62,12 @@ function setupSelector(allEpisodes) {
     }
 
     const selectedId = Number(selector.value);
-    const selectedEpisode = allEpisodes.find(ep => ep.id === selectedId);
+    const selectedEpisode = allEpisodes.find((ep) => ep.id === selectedId);
 
-    makePageForEpisodes([selectedEpisode]);
-    updateEpisodeCount(1, allEpisodes.length);
+    if (selectedEpisode) {
+      makePageForEpisodes([selectedEpisode]);
+      updateEpisodeCount(1, allEpisodes.length);
+    }
   });
 }
 
@@ -91,13 +89,16 @@ function makePageForEpisodes(episodeList) {
     card.className = "episode-card";
 
     const code = formatEpisodeCode(episode.season, episode.number);
+    const imgSrc =
+      episode.image && episode.image.medium ? episode.image.medium : "";
+    const summary = episode.summary ? episode.summary : "";
 
     card.innerHTML = `
-      <img src="${episode.image?.medium ?? ""}" alt="${episode.name}" />
+      <img src="${imgSrc}" alt="${episode.name}" />
       <div class="episode-info">
         <h2>${episode.name}</h2>
         <p class="episode-code">${code}</p>
-        <div class="episode-summary">${episode.summary ?? ""}</div>
+        <div class="episode-summary">${summary}</div>
       </div>
     `;
 
